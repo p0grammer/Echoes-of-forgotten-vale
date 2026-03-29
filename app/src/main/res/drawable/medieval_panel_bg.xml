@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer Border -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#332211" />
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+    <!-- Inner Border -->
+    <item android:bottom="1dp" android:left="1dp" android:right="1dp" android:top="1dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#AA8844" />
+        </shape>
+    </item>
+    <!-- Main Content Area -->
+    <item android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#F21A1510" />
+        </shape>
+    </item>
+
+    <!-- Small Corner Ornaments - Positioned strictly in corners -->
+    <item android:width="12dp" android:height="12dp" android:gravity="top|left">
+        <bitmap android:src="@drawable/ornament1" android:tint="#66AA8844" />
+    </item>
+    <item android:width="12dp" android:height="12dp" android:gravity="top|right">
+        <bitmap android:src="@drawable/ornament2" android:tint="#66AA8844" />
+    </item>
+    <item android:width="12dp" android:height="12dp" android:gravity="bottom|left">
+        <bitmap android:src="@drawable/ornament3" android:tint="#66AA8844" />
+    </item>
+    <item android:width="12dp" android:height="12dp" android:gravity="bottom|right">
+        <bitmap android:src="@drawable/ornament1" android:tint="#66AA8844" />
+    </item>
+</layer-list>

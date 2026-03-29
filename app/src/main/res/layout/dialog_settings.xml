@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#1A1510"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SETTINGS"
+        android:textColor="#AA8844"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/fontfile1"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Audio Volume"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:fontFamily="@font/fontfile1"
+        android:layout_marginBottom="8dp"/>
+
+    <SeekBar
+        android:id="@+id/sbVolume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="70"
+        android:progressTint="#AA8844"
+        android:thumbTint="#FFD700"
+        android:layout_marginBottom="16dp"/>
+
+    <CheckBox
+        android:id="@+id/cbMusicToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Music"
+        android:textColor="#FFFFFF"
+        android:buttonTint="#AA8844"
+        android:checked="true"
+        android:fontFamily="@font/fontfile1"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data Management"
+        android:textColor="#AA8844"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/fontfile1"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/btnDeleteSave"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="DELETE ALL SAVES"
+        android:background="@drawable/medieval_button_bg"
+        android:textColor="#FF4444"
+        android:textSize="12sp"
+        android:fontFamily="@font/fontfile1"
+        android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/btnContinue"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:text="BACK TO VALE"
+        android:background="@drawable/medieval_button_bg"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/fontfile1"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnExit"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:text="MAIN MENU"
+        android:background="@drawable/medieval_button_bg"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/fontfile1"/>
+
+</LinearLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#40FFFFFF">
+    <item>
+        <inset android:insetBottom="4dp">
+            <layer-list>
+                <item>
+                    <shape android:shape="rectangle">
+                        <solid android:color="#E6221100" />
+                        <stroke android:width="2dp" android:color="#AA8844" />
+                        <corners android:radius="0dp" />
+                    </shape>
+                </item>
+                <!-- Remove ornaments or make them much smaller if they are causing overlap issues -->
+                <item android:width="12dp" android:height="12dp" android:gravity="center_vertical|left" android:left="2dp">
+                    <bitmap android:src="@drawable/ornament1" android:tint="#AA8844" android:alpha="0.3" />
+                </item>
+                <item android:width="12dp" android:height="12dp" android:gravity="center_vertical|right" android:right="2dp">
+                    <bitmap android:src="@drawable/ornament2" android:tint="#AA8844" android:alpha="0.3" />
+                </item>
+            </layer-list>
+        </inset>
+    </item>
+</ripple>
