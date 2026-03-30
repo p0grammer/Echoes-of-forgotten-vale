@@ -229,6 +229,8 @@
             android:layout_height="0dp"
             android:alpha="0"
             android:background="@color/vale_background"
+            android:clickable="false"
+            android:focusable="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -351,7 +353,7 @@
             android:layout_marginStart="18dp"
             android:layout_marginEnd="18dp"
             android:layout_marginBottom="18dp"
-            android:minHeight="156dp"
+            android:minHeight="188dp"
             android:background="@drawable/medieval_panel_bg"
             android:paddingStart="18dp"
             android:paddingTop="16dp"
@@ -392,40 +394,36 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvSpeakerName"
                 tools:text="The Aethelroot pulses with a dim, rhythmic light..." />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- Choice Container - Narrower box with centered, padded choices -->
-        <ScrollView
-            android:id="@+id/svChoices"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginEnd="48dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/medieval_panel_bg"
-            android:paddingHorizontal="14dp"
-            android:paddingVertical="14dp"
-            android:clipToPadding="false"
-            android:fillViewport="true"
-            android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/quickPanel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/llStatsHud"
-            app:layout_constraintVertical_bias="1.0"
-            app:layout_constraintWidth_max="360dp"
-            app:layout_constrainedHeight="true">
-
-            <LinearLayout
-                android:id="@+id/llChoices"
-                android:layout_width="match_parent"
+            <ScrollView
+                android:id="@+id/svChoices"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp" />
-        </ScrollView>
+                android:layout_marginTop="14dp"
+                android:background="@android:color/transparent"
+                android:clipToPadding="false"
+                android:elevation="18dp"
+                android:fillViewport="true"
+                android:overScrollMode="never"
+                android:paddingBottom="4dp"
+                android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+                android:scrollbars="vertical"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvSceneText">
+
+                <LinearLayout
+                    android:id="@+id/llChoices"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp" />
+            </ScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Credits Overlay -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -549,6 +547,7 @@
             android:id="@+id/overlayContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="false"
             android:elevation="20dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

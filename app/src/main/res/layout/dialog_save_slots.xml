@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:background="@drawable/medieval_panel_bg"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvSlotDialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="SAVE GAME"
+        android:textColor="@color/vale_hope"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/fontfile1" />
+
+    <TextView
+        android:id="@+id/tvSlotDialogSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="18dp"
+        android:alpha="0.82"
+        android:gravity="center"
+        android:textColor="@color/vale_truth"
+        android:textSize="12sp"
+        android:fontFamily="serif" />
+
+    <Button
+        android:id="@+id/btnDialogSlot1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/medieval_button_bg"
+        android:fontFamily="@font/fontfile1"
+        android:minHeight="48dp"
+        android:paddingVertical="10dp"
+        android:textAllCaps="false"
+        android:textColor="@color/vale_truth"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btnDialogSlot2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/medieval_button_bg"
+        android:fontFamily="@font/fontfile1"
+        android:minHeight="48dp"
+        android:paddingVertical="10dp"
+        android:textAllCaps="false"
+        android:textColor="@color/vale_truth"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btnDialogSlot3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/medieval_button_bg"
+        android:fontFamily="@font/fontfile1"
+        android:minHeight="48dp"
+        android:paddingVertical="10dp"
+        android:textAllCaps="false"
+        android:textColor="@color/vale_truth"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btnDialogSlot4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/medieval_button_bg"
+        android:fontFamily="@font/fontfile1"
+        android:minHeight="48dp"
+        android:paddingVertical="10dp"
+        android:textAllCaps="false"
+        android:textColor="@color/vale_truth"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btnDialogSlot5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/medieval_button_bg"
+        android:fontFamily="@font/fontfile1"
+        android:minHeight="48dp"
+        android:paddingVertical="10dp"
+        android:textAllCaps="false"
+        android:textColor="@color/vale_truth"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/btnDialogCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/menu_button_bg"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/fontfile1"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp"
+        android:text="CANCEL"
+        android:textColor="@color/vale_truth"
+        android:textSize="14sp" />
+
+</LinearLayout>

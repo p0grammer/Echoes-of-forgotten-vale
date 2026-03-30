@@ -20,6 +20,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -31,6 +32,7 @@ import strss.no.echoesoftheforgottenvale.logic.GameState
 import strss.no.echoesoftheforgottenvale.logic.MemoryDistortionEngine
 import strss.no.echoesoftheforgottenvale.logic.RealityInstabilityRenderer
 import strss.no.echoesoftheforgottenvale.logic.SaveManager
+import strss.no.echoesoftheforgottenvale.logic.SaveSlotSummary
 import strss.no.echoesoftheforgottenvale.logic.SceneManager
 import strss.no.echoesoftheforgottenvale.logic.SceneRepository
 import strss.no.echoesoftheforgottenvale.model.Choice
@@ -38,8 +40,16 @@ import strss.no.echoesoftheforgottenvale.visual.AnimationController
 import strss.no.echoesoftheforgottenvale.visual.AssetManager
 import strss.no.echoesoftheforgottenvale.visual.UIManager
 import strss.no.echoesoftheforgottenvale.visual.VisualPalette
+import java.text.DateFormat
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
+
+    private enum class SlotMode {
+        SAVE,
+        LOAD,
+        NEW_GAME
+    }
 
     private val TAG = "GameDebug"
     private lateinit var binding: ActivityMainBinding
@@ -62,10 +72,19 @@ class MainActivity : AppCompatActivity() {
     private var mediaPlayer: MediaPlayer? = null
     private var currentVolume = 0.7f
     private var currentMusicResId: Int = 0
+    private var activeSaveSlot: Int? = null
     
     // Quick UI states
     private var isAutoMode = false
     private var isQuickPanelVisible = true
+
+    private fun handleNarrativeTap() {
+        if (!isQuickPanelVisible) {
+            toggleInterface()
+        } else if (isTyping) {
+            skipTypewriter()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,31 +133,47 @@ class MainActivity : AppCompatActivity() {
             null,
             "menu"
         )
+        binding.transitionScrim.isClickable = false
+        binding.transitionScrim.isFocusable = false
+        binding.overlayContainer.isClickable = false
+        binding.overlayContainer.isFocusable = false
         uiManager.apply(binding)
     }
 
     private fun setupQuickUI() {
         binding.btnHistory.setOnClickListener { showHistory() }
-        binding.btnSave.setOnClickListener { showSaveSlots(isSaving = true) }
+        binding.btnSave.setOnClickListener {
+            val currentSlot = activeSaveSlot
+            if (currentSlot != null && binding.gameContainer.visibility == View.VISIBLE) {
+                performSave(currentSlot)
+            } else {
+                showSaveSlots(isSaving = true)
+            }
+        }
+        binding.btnSave.setOnLongClickListener {
+            showSaveSlots(isSaving = true)
+            true
+        }
         binding.btnSkip.setOnClickListener { if (isTyping) skipTypewriter() }
         binding.btnAuto.setOnClickListener {
             isAutoMode = !isAutoMode
             binding.btnAuto.alpha = if (isAutoMode) 1.0f else 0.5f
+            if (isAutoMode && isTyping) {
+                skipTypewriter()
+            }
         }
         binding.btnSettingsInGame.setOnClickListener { showSettingsDialog() }
         binding.btnHide.setOnClickListener { toggleInterface() }
         binding.btnBackToGame.setOnClickListener { binding.historyOverlay.visibility = View.GONE }
         
         binding.btnEndToMenu.setOnClickListener { resetToMainMenu() }
-        binding.btnEndLoadSave.setOnClickListener { 
-            binding.creditsOverlay.visibility = View.GONE
-            showSaveSlots(isSaving = false) 
-        }
-        
-        binding.mainLayout.setOnClickListener {
-            if (!isQuickPanelVisible) toggleInterface()
-            else if (isTyping) skipTypewriter()
-        }
+        binding.btnEndLoadSave.setOnClickListener { showSaveSlots(isSaving = false) }
+
+        binding.mainLayout.setOnClickListener(null)
+        binding.visualRenderer.setOnClickListener { handleNarrativeTap() }
+        binding.vTextOverlay.setOnClickListener { handleNarrativeTap() }
+        binding.tvSceneText.setOnClickListener { handleNarrativeTap() }
+        binding.tvSpeakerName.setOnClickListener { handleNarrativeTap() }
     }
 
     private fun toggleInterface() {
@@ -224,62 +259,144 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun resetToMainMenu() {
+        activeSaveSlot = null
         binding.gameContainer.visibility = View.GONE
         binding.creditsOverlay.visibility = View.GONE
         setupMainMenu()
     }
 
     private fun showSaveSlots(isSaving: Boolean, isNewGame: Boolean = false) {
-        binding.llMenuButtons.visibility = View.GONE
-        binding.llSaveSlots.visibility = View.VISIBLE
-        binding.tvSlotTitle.text = if (isSaving) "SAVE GAME" else if (isNewGame) "NEW GAME" else "LOAD MEMORY"
-        animationController.animateNarrativeLayer(binding.llSaveSlots)
-        
-        val slots = listOf(binding.btnSlot1, binding.btnSlot2, binding.btnSlot3, binding.btnSlot4, binding.btnSlot5)
-        slots.forEachIndexed { index, button ->
+        val mode = when {
+            isSaving -> SlotMode.SAVE
+            isNewGame -> SlotMode.NEW_GAME
+            else -> SlotMode.LOAD
+        }
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_save_slots, null)
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        val titleView = dialogView.findViewById<TextView>(R.id.tvSlotDialogTitle)
+        val subtitleView = dialogView.findViewById<TextView>(R.id.tvSlotDialogSubtitle)
+        val cancelView = dialogView.findViewById<TextView>(R.id.btnDialogCancel)
+        val buttons = listOf(
+            dialogView.findViewById<Button>(R.id.btnDialogSlot1),
+            dialogView.findViewById<Button>(R.id.btnDialogSlot2),
+            dialogView.findViewById<Button>(R.id.btnDialogSlot3),
+            dialogView.findViewById<Button>(R.id.btnDialogSlot4),
+            dialogView.findViewById<Button>(R.id.btnDialogSlot5)
+        )
+
+        titleView.text = when (mode) {
+            SlotMode.SAVE -> "SAVE GAME"
+            SlotMode.LOAD -> "LOAD MEMORY"
+            SlotMode.NEW_GAME -> "NEW GAME"
+        }
+        subtitleView.text = when (mode) {
+            SlotMode.SAVE -> "Choose a slot for this run. Long-press SAVE in game if you want a different slot."
+            SlotMode.LOAD -> "Load a recorded run and resume from its saved scene and state."
+            SlotMode.NEW_GAME -> "Choose where the new journey should live. Existing data in that slot will be replaced."
+        }
+
+        buttons.forEachIndexed { index, button ->
             val slotNum = index + 1
-            val hasSave = saveManager.hasSave(slotNum)
-            button.text = if (hasSave) "Slot $slotNum - ${saveManager.loadCurrentSceneId(slotNum)}" else "Slot $slotNum - Empty"
-            
+            val summary = saveManager.getSlotSummary(slotNum)
+            button.text = formatSlotLabel(summary)
+            button.isEnabled = mode != SlotMode.LOAD || summary.exists
+            button.alpha = if (button.isEnabled) 1.0f else 0.45f
             button.setOnClickListener {
-                if (isSaving) {
-                    saveManager.saveGame(slotNum, sceneManager.getCurrentScene()?.id ?: "start", gameState)
-                    showStatGainAnimation("GAME SAVED TO SLOT $slotNum")
-                    binding.llSaveSlots.visibility = View.GONE
-                } else {
-                    if (isNewGame) {
+                dialog.dismiss()
+                when (mode) {
+                    SlotMode.SAVE -> performSave(slotNum)
+                    SlotMode.LOAD -> loadFromSlot(slotNum)
+                    SlotMode.NEW_GAME -> {
                         saveManager.deleteSave(slotNum)
                         gameState.reset()
                         startGame("start", slotNum)
-                    } else if (hasSave) {
-                        gameState.dialogueHistory.clear()
-                        saveManager.loadGameState(gameState, slotNum)
-                        startGame(saveManager.loadCurrentSceneId(slotNum), slotNum)
                     }
                 }
             }
         }
+
+        cancelView.setOnClickListener { dialog.dismiss() }
+
+        dialog.show()
+        uiManager.styleDialog(dialog)
+
+        if (mode == SlotMode.LOAD && buttons.none { it.isEnabled }) {
+            Toast.makeText(this, "No save files found yet.", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    private fun startGame(sceneId: String, slot: Int) {
-        isEnding = false
-        binding.llSaveSlots.visibility = View.GONE
-        binding.menuContainer.animate()
-            .alpha(0f)
-            .setDuration(800)
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    binding.menuContainer.visibility = View.GONE
-                    binding.gameContainer.visibility = View.VISIBLE
-                    binding.gameContainer.alpha = 0f
-                    binding.gameContainer.animate().alpha(1f).setDuration(800).start()
+    private fun performSave(slot: Int) {
+        val sceneId = sceneManager.getCurrentScene()?.id ?: "start"
+        saveManager.saveGame(slot, sceneId, gameState)
+        activeSaveSlot = slot
+        if (binding.gameContainer.visibility == View.VISIBLE) {
+            showStatGainAnimation("GAME SAVED TO SLOT $slot")
+        } else {
+            Toast.makeText(this, "Saved to slot $slot", Toast.LENGTH_SHORT).show()
+        }
+    }
 
-                    gameState.dialogueHistory.clear()
-                    updateMusicForScene(sceneId)
-                    updateStatsHud(animate = false)
-                    loadScene(sceneId, animate = false)
-                }
-            })
+    private fun loadFromSlot(slot: Int) {
+        val sceneId = saveManager.loadGameState(gameState, slot)
+        if (sceneId == null) {
+            Toast.makeText(this, "That slot is empty.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        startGame(sceneId, slot, restoreSavedState = true)
+    }
+
+    private fun formatSlotLabel(summary: SaveSlotSummary): String {
+        if (!summary.exists || summary.sceneId == null) {
+            return "Slot ${summary.slot} - Empty"
+        }
+        val sceneName = summary.sceneId
+            .replace('_', ' ')
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+        val savedAt = summary.savedAtMillis?.let {
+            DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(Date(it))
+        } ?: "Unknown time"
+        return "Slot ${summary.slot} - $sceneName\n$savedAt"
+    }
+
+    private fun startGame(sceneId: String, slot: Int, restoreSavedState: Boolean = false) {
+        isEnding = false
+        activeSaveSlot = slot
+        binding.llSaveSlots.visibility = View.GONE
+        val enterGame = {
+            binding.menuContainer.animate().setListener(null)
+            binding.menuContainer.alpha = 1f
+            binding.menuContainer.visibility = View.GONE
+            binding.creditsOverlay.visibility = View.GONE
+            binding.gameContainer.visibility = View.VISIBLE
+
+            if (!restoreSavedState) {
+                gameState.dialogueHistory.clear()
+            }
+
+            updateMusicForScene(sceneId)
+            updateStatsHud(animate = false)
+            loadScene(sceneId, animate = false)
+        }
+
+        if (binding.menuContainer.visibility == View.VISIBLE) {
+            binding.menuContainer.animate()
+                .alpha(0f)
+                .setDuration(800)
+                .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        binding.gameContainer.alpha = 0f
+                        enterGame()
+                        binding.gameContainer.animate().alpha(1f).setDuration(800).start()
+                    }
+                })
+        } else {
+            binding.gameContainer.alpha = 1f
+            enterGame()
+        }
     }
 
     private fun updateMusicForScene(sceneId: String) {
@@ -409,7 +526,9 @@ class MainActivity : AppCompatActivity() {
         fullText = realityInstabilityRenderer.apply(text, gameState)
         typeIndex = 0
         isTyping = true
-        currentTypingDelay = realityInstabilityRenderer.typingDelayMs(gameState)
+        currentTypingDelay = realityInstabilityRenderer.typingDelayMs(gameState).let { baseDelay ->
+            if (isAutoMode) minOf(baseDelay, 12L) else baseDelay
+        }
         binding.tvSceneText.text = ""
 
         val runnable = object : Runnable {
@@ -440,6 +559,7 @@ class MainActivity : AppCompatActivity() {
         
         val scene = sceneManager.getCurrentScene() ?: return
         
+        binding.svChoices.animate().cancel()
         binding.llChoices.removeAllViews()
         val statsMap = gameState.getStatsMap()
         
@@ -449,7 +569,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
         if (binding.llChoices.childCount > 0) {
+            binding.svChoices.alpha = 1f
+            binding.svChoices.translationY = 0f
+            binding.svChoices.isEnabled = true
+            binding.svChoices.isClickable = true
             binding.svChoices.visibility = View.VISIBLE
+            binding.svChoices.requestLayout()
+            binding.svChoices.post { binding.svChoices.fullScroll(View.FOCUS_UP) }
             animationController.animateChoiceList(binding.llChoices)
         } else {
             binding.svChoices.visibility = View.GONE
@@ -653,6 +779,8 @@ class MainActivity : AppCompatActivity() {
             background = ContextCompat.getDrawable(context, R.drawable.btn_choice_bg)
             setTextColor(VisualPalette.TRUTH)
             isAllCaps = false
+            isClickable = true
+            isFocusable = true
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             setPadding(24, 14, 24, 14)
             layoutParams = LinearLayout.LayoutParams(

@@ -46,6 +46,9 @@ class AnimationController {
                 scrim.animate()
                     .alpha(0f)
                     .setDuration(360)
+                    .withEndAction {
+                        scrim.visibility = View.GONE
+                    }
                     .start()
             }
             .start()
