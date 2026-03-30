@@ -5,7 +5,7 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@color/vale_background"
     tools:context=".MainActivity">
 
     <!-- MAIN MENU UI -->
@@ -13,27 +13,33 @@
         android:id="@+id/menuContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#1A1A1A"
+        android:background="@color/vale_background"
         android:visibility="visible">
+
+        <strss.no.echoesoftheforgottenvale.visual.VisualRenderer
+            android:id="@+id/menuVisualRenderer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
 
         <ImageView
             android:id="@+id/ivMenuBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:alpha="0.4"
-            android:src="@drawable/forgotten_outskirts" />
+            android:alpha="0"
+            android:src="@drawable/forgotten_outskirts"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="72dp"
             android:text="ECHOES OF THE\nFORGOTTEN VALE"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="32sp"
-            android:letterSpacing="0.1"
+            android:textColor="@color/vale_truth"
+            android:textSize="34sp"
+            android:letterSpacing="0.12"
             android:fontFamily="@font/fontfile1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,8 +50,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginStart="48dp"
-            android:layout_marginBottom="48dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="56dp"
+            android:background="@android:color/transparent"
+            android:paddingHorizontal="0dp"
+            android:paddingVertical="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -54,12 +63,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="START"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:paddingVertical="8dp"
+                android:textColor="@color/vale_truth"
+                android:textSize="21sp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="10dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:letterSpacing="0.2"
+                android:background="@drawable/menu_button_bg"
+                android:letterSpacing="0.16"
                 android:fontFamily="@font/fontfile1" />
 
             <TextView
@@ -67,12 +78,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="LOAD"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:paddingVertical="8dp"
+                android:textColor="@color/vale_truth"
+                android:textSize="21sp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="10dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:letterSpacing="0.2"
+                android:background="@drawable/menu_button_bg"
+                android:letterSpacing="0.16"
                 android:fontFamily="@font/fontfile1" />
 
             <TextView
@@ -80,12 +93,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="SETTINGS"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:paddingVertical="8dp"
+                android:textColor="@color/vale_truth"
+                android:textSize="21sp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="10dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:letterSpacing="0.2"
+                android:background="@drawable/menu_button_bg"
+                android:letterSpacing="0.16"
                 android:fontFamily="@font/fontfile1" />
 
             <TextView
@@ -93,12 +108,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="QUIT"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:paddingVertical="8dp"
+                android:textColor="@color/vale_truth"
+                android:textSize="21sp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="10dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:letterSpacing="0.2"
+                android:background="@drawable/menu_button_bg"
+                android:letterSpacing="0.16"
                 android:fontFamily="@font/fontfile1" />
 
         </LinearLayout>
@@ -110,7 +127,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@drawable/medieval_panel_bg"
-            android:padding="16dp"
+            android:padding="20dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -122,28 +139,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="SELECT SLOT"
-                android:textColor="#AA8844"
+                android:textColor="@color/vale_hope"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="16dp"
                 android:textStyle="bold"
                 android:fontFamily="@font/fontfile1" />
 
-            <Button android:id="@+id/btnSlot1" android:layout_width="match_parent" android:layout_height="40dp" android:text="Slot 1 - Empty" android:background="@drawable/medieval_button_bg" android:layout_marginBottom="6dp" android:textSize="12sp" android:textColor="#FFFFFF" android:textAllCaps="false" android:fontFamily="@font/fontfile1"/>
-            <Button android:id="@+id/btnSlot2" android:layout_width="match_parent" android:layout_height="40dp" android:text="Slot 2 - Empty" android:background="@drawable/medieval_button_bg" android:layout_marginBottom="6dp" android:textSize="12sp" android:textColor="#FFFFFF" android:textAllCaps="false" android:fontFamily="@font/fontfile1"/>
-            <Button android:id="@+id/btnSlot3" android:layout_width="match_parent" android:layout_height="40dp" android:text="Slot 3 - Empty" android:background="@drawable/medieval_button_bg" android:layout_marginBottom="6dp" android:textSize="12sp" android:textColor="#FFFFFF" android:textAllCaps="false" android:fontFamily="@font/fontfile1"/>
-            <Button android:id="@+id/btnSlot4" android:layout_width="match_parent" android:layout_height="40dp" android:text="Slot 4 - Empty" android:background="@drawable/medieval_button_bg" android:layout_marginBottom="6dp" android:textSize="12sp" android:textColor="#FFFFFF" android:textAllCaps="false" android:fontFamily="@font/fontfile1"/>
-            <Button android:id="@+id/btnSlot5" android:layout_width="match_parent" android:layout_height="40dp" android:text="Slot 5 - Empty" android:background="@drawable/medieval_button_bg" android:layout_marginBottom="12dp" android:textSize="12sp" android:textColor="#FFFFFF" android:textAllCaps="false" android:fontFamily="@font/fontfile1"/>
+            <Button android:id="@+id/btnSlot1" android:layout_width="match_parent" android:layout_height="44dp" android:text="Slot 1 - Empty" android:background="@drawable/medieval_button_bg" android:layout_marginBottom="8dp" android:textSize="12sp" android:textColor="@color/vale_truth" android:textAllCaps="false" android:fontFamily="@font/fontfile1"/>
+            <Button android:id="@+id/btnSlot2" android:layout_width="match_parent" android:layout_height="44dp" android:text="Slot 2 - Empty" android:background="@drawable/medieval_button_bg" android:layout_marginBottom="8dp" android:textSize="12sp" android:textColor="@color/vale_truth" android:textAllCaps="false" android:fontFamily="@font/fontfile1"/>
+            <Button android:id="@+id/btnSlot3" android:layout_width="match_parent" android:layout_height="44dp" android:text="Slot 3 - Empty" android:background="@drawable/medieval_button_bg" android:layout_marginBottom="8dp" android:textSize="12sp" android:textColor="@color/vale_truth" android:textAllCaps="false" android:fontFamily="@font/fontfile1"/>
+            <Button android:id="@+id/btnSlot4" android:layout_width="match_parent" android:layout_height="44dp" android:text="Slot 4 - Empty" android:background="@drawable/medieval_button_bg" android:layout_marginBottom="8dp" android:textSize="12sp" android:textColor="@color/vale_truth" android:textAllCaps="false" android:fontFamily="@font/fontfile1"/>
+            <Button android:id="@+id/btnSlot5" android:layout_width="match_parent" android:layout_height="44dp" android:text="Slot 5 - Empty" android:background="@drawable/medieval_button_bg" android:layout_marginBottom="14dp" android:textSize="12sp" android:textColor="@color/vale_truth" android:textAllCaps="false" android:fontFamily="@font/fontfile1"/>
 
             <TextView
                 android:id="@+id/btnCancelSlots"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:background="@drawable/menu_button_bg"
                 android:text="CANCEL"
-                android:textColor="#FFFFFF"
-                android:alpha="0.6"
+                android:textColor="@color/vale_truth"
                 android:textSize="14sp"
-                android:padding="8dp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:fontFamily="@font/fontfile1" />
@@ -158,10 +176,20 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
+        <strss.no.echoesoftheforgottenvale.visual.VisualRenderer
+            android:id="@+id/visualRenderer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/ivBackground"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -174,6 +202,7 @@
             android:layout_height="0dp"
             android:alpha="0"
             android:scaleType="fitCenter"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.9"
@@ -186,6 +215,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="fitCenter"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.8"
@@ -193,14 +223,25 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.5" />
 
+        <View
+            android:id="@+id/transitionScrim"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alpha="0"
+            android:background="@color/vale_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <!-- Stats HUD -->
         <LinearLayout
             android:id="@+id/llStatsHud"
-            android:layout_width="150dp"
+            android:layout_width="172dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="16dp"
             android:orientation="vertical"
-            android:padding="8dp"
+            android:padding="14dp"
             android:background="@drawable/medieval_panel_bg"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -215,18 +256,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="MEMORY"
-                    android:textColor="#AA8844"
-                    android:textSize="9sp"
-                    android:letterSpacing="0.1"
+                    android:textColor="@color/vale_truth"
+                    android:textSize="10sp"
+                    android:letterSpacing="0.12"
                     android:textStyle="bold"
-                    android:fontFamily="serif" />
+                    android:fontFamily="@font/fontfile1" />
                 <ProgressBar
                     android:id="@+id/pbMemory"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:progressDrawable="@android:drawable/progress_horizontal"
-                    android:progressTint="#FFD700"
+                    android:layout_height="6dp"
+                    android:layout_marginTop="6dp"
+                    android:progressDrawable="@drawable/hud_progress_memory"
                     android:max="15" />
             </LinearLayout>
 
@@ -240,18 +281,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="HUMANITY"
-                    android:textColor="#AA8844"
-                    android:textSize="9sp"
-                    android:letterSpacing="0.1"
+                    android:textColor="@color/vale_hope"
+                    android:textSize="10sp"
+                    android:letterSpacing="0.12"
                     android:textStyle="bold"
-                    android:fontFamily="serif" />
+                    android:fontFamily="@font/fontfile1" />
                 <ProgressBar
                     android:id="@+id/pbHumanity"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:progressDrawable="@android:drawable/progress_horizontal"
-                    android:progressTint="#00FFCC"
+                    android:layout_height="6dp"
+                    android:layout_marginTop="6dp"
+                    android:progressDrawable="@drawable/hud_progress_humanity"
                     android:max="15" />
             </LinearLayout>
 
@@ -264,18 +305,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="CORRUPTION"
-                    android:textColor="#AA8844"
-                    android:textSize="9sp"
-                    android:letterSpacing="0.1"
+                    android:textColor="#8891A7"
+                    android:textSize="10sp"
+                    android:letterSpacing="0.12"
                     android:textStyle="bold"
-                    android:fontFamily="serif" />
+                    android:fontFamily="@font/fontfile1" />
                 <ProgressBar
                     android:id="@+id/pbCorruption"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:progressDrawable="@android:drawable/progress_horizontal"
-                    android:progressTint="#FF4444"
+                    android:layout_height="6dp"
+                    android:layout_marginTop="6dp"
+                    android:progressDrawable="@drawable/hud_progress_corruption"
                     android:max="15" />
             </LinearLayout>
         </LinearLayout>
@@ -286,30 +327,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="4dp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="4dp"
-            android:background="@drawable/medieval_panel_bg"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="8dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
+            android:background="@android:color/transparent"
             app:layout_constraintBottom_toTopOf="@+id/vTextOverlay"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView android:id="@+id/btnHistory" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="LOG" android:textColor="#AA8844" android:textSize="11sp" android:textStyle="bold" android:layout_marginEnd="12dp" android:clickable="true" android:focusable="true" android:fontFamily="@font/fontfile1" />
-            <TextView android:id="@+id/btnSave" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SAVE" android:textColor="#AA8844" android:textSize="11sp" android:textStyle="bold" android:layout_marginEnd="12dp" android:clickable="true" android:focusable="true" android:fontFamily="@font/fontfile1" />
-            <TextView android:id="@+id/btnSkip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SKIP" android:textColor="#AA8844" android:textSize="11sp" android:textStyle="bold" android:layout_marginEnd="12dp" android:clickable="true" android:focusable="true" android:fontFamily="@font/fontfile1" />
-            <TextView android:id="@+id/btnAuto" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="AUTO" android:textColor="#AA8844" android:textSize="11sp" android:textStyle="bold" android:layout_marginEnd="12dp" android:clickable="true" android:focusable="true" android:fontFamily="@font/fontfile1" />
-            <TextView android:id="@+id/btnSettingsInGame" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="GEAR" android:textColor="#AA8844" android:textSize="11sp" android:textStyle="bold" android:layout_marginEnd="12dp" android:clickable="true" android:focusable="true" android:fontFamily="@font/fontfile1" />
-            <TextView android:id="@+id/btnHide" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="EYE" android:textColor="#AA8844" android:textSize="11sp" android:textStyle="bold" android:clickable="true" android:focusable="true" android:fontFamily="@font/fontfile1" />
+            <TextView android:id="@+id/btnHistory" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="LOG" android:textColor="@color/vale_truth" android:textSize="11sp" android:textStyle="bold" android:layout_marginEnd="14dp" android:clickable="true" android:focusable="true" android:fontFamily="@font/fontfile1" />
+            <TextView android:id="@+id/btnSave" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SAVE" android:textColor="@color/vale_truth" android:textSize="11sp" android:textStyle="bold" android:layout_marginEnd="14dp" android:clickable="true" android:focusable="true" android:fontFamily="@font/fontfile1" />
+            <TextView android:id="@+id/btnSkip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SKIP" android:textColor="@color/vale_truth" android:textSize="11sp" android:textStyle="bold" android:layout_marginEnd="14dp" android:clickable="true" android:focusable="true" android:fontFamily="@font/fontfile1" />
+            <TextView android:id="@+id/btnAuto" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="AUTO" android:textColor="@color/vale_truth" android:textSize="11sp" android:textStyle="bold" android:layout_marginEnd="14dp" android:clickable="true" android:focusable="true" android:fontFamily="@font/fontfile1" />
+            <TextView android:id="@+id/btnSettingsInGame" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SET" android:textColor="@color/vale_truth" android:textSize="11sp" android:textStyle="bold" android:layout_marginEnd="14dp" android:clickable="true" android:focusable="true" android:fontFamily="@font/fontfile1" />
+            <TextView android:id="@+id/btnHide" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="HIDE" android:textColor="@color/vale_truth" android:textSize="11sp" android:textStyle="bold" android:clickable="true" android:focusable="true" android:fontFamily="@font/fontfile1" />
         </LinearLayout>
 
         <!-- Dialogue Box -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/vTextOverlay"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:minHeight="100dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="18dp"
+            android:minHeight="156dp"
             android:background="@drawable/medieval_panel_bg"
-            android:paddingBottom="8dp"
+            android:paddingStart="18dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -318,12 +365,14 @@
                 android:id="@+id/tvSpeakerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
-                android:textColor="#AA8844"
-                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/speaker_name_bg"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:textColor="@color/vale_hope"
+                android:textSize="13sp"
                 android:textStyle="bold"
-                android:letterSpacing="0.05"
+                android:letterSpacing="0.08"
                 android:fontFamily="@font/fontfile1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -333,11 +382,10 @@
                 android:id="@+id/tvSceneText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="32dp"
-                android:layout_marginTop="2dp"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                android:lineSpacingExtra="3dp"
+                android:layout_marginTop="12dp"
+                android:textColor="@color/vale_truth"
+                android:textSize="16sp"
+                android:lineSpacingExtra="8dp"
                 android:fontFamily="serif"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -349,21 +397,24 @@
         <!-- Choice Container - Narrower box with centered, padded choices -->
         <ScrollView
             android:id="@+id/svChoices"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/medieval_panel_bg"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="12dp"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="14dp"
             android:clipToPadding="false"
-            android:scrollbars="none"
+            android:fillViewport="true"
+            android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+            android:scrollbars="vertical"
             app:layout_constraintBottom_toTopOf="@+id/quickPanel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llStatsHud"
-            app:layout_constraintVertical_bias="0.8"
-            app:layout_constraintWidth_min="160dp"
-            app:layout_constraintWidth_max="220dp"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintWidth_max="360dp"
             app:layout_constrainedHeight="true">
 
             <LinearLayout
@@ -381,7 +432,7 @@
             android:id="@+id/creditsOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#FF000000"
+            android:background="@color/vale_background"
             android:visibility="gone"
             android:elevation="25dp">
 
@@ -402,10 +453,10 @@
                     <View android:layout_width="match_parent" android:layout_height="600dp" />
 
                     <TextView
-                        android:id="@+id/tvEndingLore"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="#FFFFFF"
+                    android:id="@+id/tvEndingLore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/vale_truth"
                         android:textSize="18sp"
                         android:textAlignment="center"
                         android:fontFamily="serif"
@@ -414,10 +465,11 @@
                     <View android:layout_width="match_parent" android:layout_height="100dp" />
 
                     <TextView
-                        android:id="@+id/tvFullCredits"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="#CCCCCC"
+                    android:id="@+id/tvFullCredits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/vale_truth"
+                    android:alpha="0.8"
                         android:textSize="14sp"
                         android:textAlignment="center"
                         android:fontFamily="serif"
@@ -426,10 +478,10 @@
                     <View android:layout_width="match_parent" android:layout_height="100dp" />
 
                     <TextView
-                        android:id="@+id/tvCreatorCredits"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="#AA8844"
+                    android:id="@+id/tvCreatorCredits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/vale_hope"
                         android:textSize="22sp"
                         android:textAlignment="center"
                         android:fontFamily="@font/fontfile1"
@@ -458,10 +510,10 @@
                 <Button
                     android:id="@+id/btnEndToMenu"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="44dp"
                     android:text="HEAD TO MAIN MENU"
                     android:background="@drawable/medieval_button_bg"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/vale_truth"
                     android:textSize="12sp"
                     android:fontFamily="@font/fontfile1"
                     android:layout_marginBottom="8dp"/>
@@ -469,10 +521,10 @@
                 <Button
                     android:id="@+id/btnEndLoadSave"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="44dp"
                     android:text="LOAD SAVE"
                     android:background="@drawable/medieval_button_bg"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/vale_truth"
                     android:textSize="12sp"
                     android:fontFamily="@font/fontfile1"/>
             </LinearLayout>
@@ -484,20 +536,20 @@
             android:id="@+id/historyOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#F2000000"
+            android:background="@color/vale_scrim"
             android:visibility="gone"
             android:elevation="15dp">
 
-            <TextView android:id="@+id/tvHistoryHeader" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="HISTORY" android:textColor="#AA8844" android:textSize="18sp" android:letterSpacing="0.2" android:fontFamily="@font/fontfile1" android:layout_marginTop="20dp" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent" />
-            <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_marginTop="20dp" android:layout_marginBottom="20dp" android:paddingHorizontal="40dp" app:layout_constraintTop_toBottomOf="@+id/tvHistoryHeader" app:layout_constraintBottom_toTopOf="@+id/btnBackToGame"><LinearLayout android:id="@+id/llHistoryContent" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" /></ScrollView>
-            <TextView android:id="@+id/btnBackToGame" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="RETURN" android:textColor="#FFFFFF" android:textSize="14sp" android:letterSpacing="0.1" android:padding="10dp" android:fontFamily="serif" android:layout_marginBottom="20dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
+            <TextView android:id="@+id/tvHistoryHeader" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="HISTORY" android:textColor="@color/vale_hope" android:textSize="18sp" android:letterSpacing="0.2" android:fontFamily="@font/fontfile1" android:layout_marginTop="28dp" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent" />
+            <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_marginTop="24dp" android:layout_marginBottom="20dp" android:paddingHorizontal="24dp" android:scrollbarThumbVertical="@drawable/scrollbar_thumb" app:layout_constraintTop_toBottomOf="@+id/tvHistoryHeader" app:layout_constraintBottom_toTopOf="@+id/btnBackToGame"><LinearLayout android:id="@+id/llHistoryContent" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/medieval_panel_bg" android:padding="18dp" /></ScrollView>
+            <TextView android:id="@+id/btnBackToGame" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="RETURN" android:textColor="@color/vale_truth" android:textSize="14sp" android:letterSpacing="0.1" android:paddingHorizontal="18dp" android:paddingVertical="10dp" android:background="@drawable/menu_button_bg" android:fontFamily="serif" android:layout_marginBottom="24dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
             android:id="@+id/overlayContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:elevation="10dp" />
+            android:elevation="20dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -3,7 +3,6 @@ package strss.no.echoesoftheforgottenvale
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
-import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -14,7 +13,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.Button
 import android.widget.CheckBox
@@ -30,10 +28,16 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import strss.no.echoesoftheforgottenvale.databinding.ActivityMainBinding
 import strss.no.echoesoftheforgottenvale.logic.GameState
+import strss.no.echoesoftheforgottenvale.logic.MemoryDistortionEngine
+import strss.no.echoesoftheforgottenvale.logic.RealityInstabilityRenderer
 import strss.no.echoesoftheforgottenvale.logic.SaveManager
 import strss.no.echoesoftheforgottenvale.logic.SceneManager
 import strss.no.echoesoftheforgottenvale.logic.SceneRepository
 import strss.no.echoesoftheforgottenvale.model.Choice
+import strss.no.echoesoftheforgottenvale.visual.AnimationController
+import strss.no.echoesoftheforgottenvale.visual.AssetManager
+import strss.no.echoesoftheforgottenvale.visual.UIManager
+import strss.no.echoesoftheforgottenvale.visual.VisualPalette
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,13 +46,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var saveManager: SaveManager
     private val sceneManager = SceneManager()
     private val gameState = GameState()
+    private val memoryDistortionEngine = MemoryDistortionEngine()
+    private val realityInstabilityRenderer = RealityInstabilityRenderer()
+    private lateinit var visualAssetManager: AssetManager
+    private val uiManager = UIManager()
+    private val animationController = AnimationController()
 
     private val handler = Handler(Looper.getMainLooper())
     private var isTyping = false
     private var isEnding = false
     private var fullText = ""
     private var typeIndex = 0
-    private val typingDelay = 40L 
+    private var currentTypingDelay = 40L
 
     private var mediaPlayer: MediaPlayer? = null
     private var currentVolume = 0.7f
@@ -70,47 +79,42 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         saveManager = SaveManager(this)
-        
+        setupVisualSystems()
         setupMainMenu()
         setupQuickUI()
-        setupCharacterAnimations()
     }
 
-    private fun setupCharacterAnimations() {
-        val breathingAnimator = ValueAnimator.ofFloat(1.0f, 1.02f)
-        breathingAnimator.duration = 3000
-        breathingAnimator.repeatMode = ValueAnimator.REVERSE
-        breathingAnimator.repeatCount = ValueAnimator.INFINITE
-        breathingAnimator.interpolator = AccelerateDecelerateInterpolator()
-        breathingAnimator.addUpdateListener { animation ->
-            val scale = animation.animatedValue as Float
-            binding.ivCharacter.scaleX = scale
-            binding.ivCharacter.scaleY = scale
-            binding.ivCharacterAura.scaleX = scale * 1.05f
-            binding.ivCharacterAura.scaleY = scale * 1.05f
-        }
-        breathingAnimator.start()
-
-        val auraAnimator = ValueAnimator.ofFloat(0.3f, 0.6f)
-        auraAnimator.duration = 2000
-        auraAnimator.repeatMode = ValueAnimator.REVERSE
-        auraAnimator.repeatCount = ValueAnimator.INFINITE
-        auraAnimator.addUpdateListener { animation ->
-            if (binding.ivCharacter.visibility == View.VISIBLE) {
-                binding.ivCharacterAura.alpha = animation.animatedValue as Float
-            }
-        }
-        auraAnimator.start()
-    }
-
-    private fun updateAuraColor(speaker: String?) {
-        val color = when (speaker) {
-            "Aethelroot" -> Color.argb(100, 255, 215, 0) 
-            "Memory Fragment", "Whispers" -> Color.argb(100, 0, 255, 204) 
-            "Darian", "Voices" -> Color.argb(100, 255, 68, 68) 
-            else -> Color.argb(50, 255, 255, 255) 
-        }
-        binding.ivCharacterAura.setColorFilter(color)
+    private fun setupVisualSystems() {
+        visualAssetManager = AssetManager(this)
+        visualAssetManager.preload(
+            R.drawable.forgotten_outskirts,
+            R.drawable.aethelroot_core,
+            R.drawable.archive_sanctum,
+            R.drawable.fractured_reality,
+            R.drawable.shattered_battlefield,
+            R.drawable.forest_1,
+            R.drawable.forest_2,
+            R.drawable.waterfall,
+            R.drawable.dark_city,
+            R.drawable.castle_inside,
+            R.drawable.cave,
+            R.drawable.hut,
+            R.drawable.player,
+            R.drawable.corrupted_player,
+            R.drawable.aelric,
+            R.drawable.seraphine,
+            R.drawable.lyra,
+            R.drawable.darian
+        )
+        binding.menuVisualRenderer.bind(visualAssetManager)
+        binding.visualRenderer.bind(visualAssetManager)
+        binding.menuVisualRenderer.setScene(
+            R.drawable.forgotten_outskirts,
+            0,
+            null,
+            "menu"
+        )
+        uiManager.apply(binding)
     }
 
     private fun setupQuickUI() {
@@ -153,28 +157,35 @@ class MainActivity : AppCompatActivity() {
         gameState.dialogueHistory.forEach { (speaker, text) ->
             val historyView = LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
-                setPadding(0, 0, 0, 48)
+                setPadding(0, 0, 0, 36)
             }
+            var speakerText: TextView? = null
             if (speaker != null) {
-                val speakerText = TextView(this).apply {
+                speakerText = TextView(this).apply {
                     this.text = speaker
-                    setTextColor(Color.WHITE)
-                    textSize = 14f
-                    alpha = 0.6f
+                    setTextColor(uiManager.accentForSpeaker(speaker))
+                    textSize = 13f
+                    alpha = 0.88f
                     setTypeface(null, android.graphics.Typeface.BOLD)
                 }
                 historyView.addView(speakerText)
             }
             val dialogueText = TextView(this).apply {
                 this.text = text
-                setTextColor(Color.WHITE)
-                textSize = 18f
+                setTextColor(VisualPalette.TRUTH)
+                textSize = 17f
                 setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4f,  resources.displayMetrics), 1.0f)
             }
+            uiManager.styleHistoryEntry(speakerText, dialogueText)
             historyView.addView(dialogueText)
             binding.llHistoryContent.addView(historyView)
         }
         binding.historyOverlay.visibility = View.VISIBLE
+        animationController.animateNarrativeLayer(
+            binding.tvHistoryHeader,
+            binding.llHistoryContent,
+            binding.btnBackToGame
+        )
     }
 
     private fun setupMainMenu() {
@@ -185,6 +196,13 @@ class MainActivity : AppCompatActivity() {
         binding.llMenuButtons.visibility = View.VISIBLE
         binding.llSaveSlots.visibility = View.GONE
         isEnding = false
+        binding.menuVisualRenderer.setScene(
+            R.drawable.forgotten_outskirts,
+            0,
+            null,
+            "menu"
+        )
+        animationController.animateNarrativeLayer(binding.tvTitle, binding.llMenuButtons)
         
         updateMusicForScene("menu")
 
@@ -215,6 +233,7 @@ class MainActivity : AppCompatActivity() {
         binding.llMenuButtons.visibility = View.GONE
         binding.llSaveSlots.visibility = View.VISIBLE
         binding.tvSlotTitle.text = if (isSaving) "SAVE GAME" else if (isNewGame) "NEW GAME" else "LOAD MEMORY"
+        animationController.animateNarrativeLayer(binding.llSaveSlots)
         
         val slots = listOf(binding.btnSlot1, binding.btnSlot2, binding.btnSlot3, binding.btnSlot4, binding.btnSlot5)
         slots.forEachIndexed { index, button ->
@@ -230,12 +249,10 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     if (isNewGame) {
                         saveManager.deleteSave(slotNum)
-                        gameState.humanity = 0
-                        gameState.corruption = 0
-                        gameState.memory = 0
-                        gameState.dialogueHistory.clear()
+                        gameState.reset()
                         startGame("start", slotNum)
                     } else if (hasSave) {
+                        gameState.dialogueHistory.clear()
                         saveManager.loadGameState(gameState, slotNum)
                         startGame(saveManager.loadCurrentSceneId(slotNum), slotNum)
                     }
@@ -245,6 +262,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startGame(sceneId: String, slot: Int) {
+        isEnding = false
         binding.llSaveSlots.visibility = View.GONE
         binding.menuContainer.animate()
             .alpha(0f)
@@ -255,10 +273,11 @@ class MainActivity : AppCompatActivity() {
                     binding.gameContainer.visibility = View.VISIBLE
                     binding.gameContainer.alpha = 0f
                     binding.gameContainer.animate().alpha(1f).setDuration(800).start()
-                    
+
+                    gameState.dialogueHistory.clear()
                     updateMusicForScene(sceneId)
                     updateStatsHud(animate = false)
-                    loadScene(sceneId)
+                    loadScene(sceneId, animate = false)
                 }
             })
     }
@@ -344,56 +363,63 @@ class MainActivity : AppCompatActivity() {
         }
 
         dialog.show()
+        uiManager.styleDialog(dialog)
     }
 
-    private fun loadScene(sceneId: String) {
+    private fun loadScene(sceneId: String, animate: Boolean = true) {
         if (sceneId == "final_trigger") {
             showEnding()
             return
         }
-        updateMusicForScene(sceneId)
-        sceneManager.goToScene(sceneId)
-        renderUI()
+        isEnding = false
+        val performSceneLoad = {
+            updateMusicForScene(sceneId)
+            sceneManager.goToScene(sceneId)
+            renderUI()
+        }
+        if (animate && binding.gameContainer.visibility == View.VISIBLE) {
+            animationController.crossfadeScene(binding.transitionScrim, performSceneLoad)
+        } else {
+            performSceneLoad()
+        }
     }
 
     private fun renderUI() {
         val scene = sceneManager.getCurrentScene() ?: return
-        binding.tvSpeakerName.text = scene.speaker ?: ""
-        binding.tvSpeakerName.visibility = if (scene.speaker != null) View.VISIBLE else View.GONE
-        
-        if (scene.backgroundResId != 0) {
-            binding.ivBackground.setImageResource(scene.backgroundResId)
-        }
-        
-        if (scene.characterResId != 0) {
-            binding.ivCharacter.setImageResource(scene.characterResId)
-            binding.ivCharacterAura.setImageResource(scene.characterResId) 
-            binding.ivCharacter.visibility = View.VISIBLE
-            binding.ivCharacterAura.visibility = View.VISIBLE
-            updateAuraColor(scene.speaker)
-        } else {
-            binding.ivCharacter.visibility = View.GONE
-            binding.ivCharacterAura.visibility = View.GONE
-        }
+        val presentation = memoryDistortionEngine.resolveScene(scene, gameState)
 
-        binding.llChoices.visibility = View.GONE
-        gameState.addToHistory(scene.speaker, scene.text)
-        startTypewriter(scene.text)
+        binding.tvSpeakerName.text = presentation.speaker ?: ""
+        binding.tvSpeakerName.visibility = if (presentation.speaker != null) View.VISIBLE else View.GONE
+        uiManager.styleSpeaker(binding.tvSpeakerName, presentation.speaker)
+        binding.visualRenderer.setScene(
+            presentation.backgroundResId,
+            presentation.characterResId,
+            presentation.speaker,
+            scene.id
+        )
+
+        binding.svChoices.visibility = View.GONE
+        gameState.addToHistory(presentation.speaker, presentation.text)
+        animationController.animateNarrativeLayer(binding.llStatsHud, binding.quickPanel, binding.vTextOverlay)
+        startTypewriter(presentation.text)
     }
 
     private fun startTypewriter(text: String) {
         handler.removeCallbacksAndMessages(null)
-        fullText = text
+        fullText = realityInstabilityRenderer.apply(text, gameState)
         typeIndex = 0
         isTyping = true
+        currentTypingDelay = realityInstabilityRenderer.typingDelayMs(gameState)
         binding.tvSceneText.text = ""
-        
+
         val runnable = object : Runnable {
             override fun run() {
                 if (typeIndex <= fullText.length) {
                     binding.tvSceneText.text = fullText.substring(0, typeIndex)
                     typeIndex++
-                    handler.postDelayed(this, typingDelay)
+                    val nextCharacter = fullText.getOrNull(typeIndex)
+                    val extraPause = realityInstabilityRenderer.additionalPause(nextCharacter, gameState)
+                    handler.postDelayed(this, currentTypingDelay + extraPause)
                 } else {
                     onTypewriterFinished()
                 }
@@ -422,41 +448,46 @@ class MainActivity : AppCompatActivity() {
                 binding.llChoices.addView(createChoiceButton(choice))
             }
         }
-        binding.llChoices.visibility = View.VISIBLE
+        if (binding.llChoices.childCount > 0) {
+            binding.svChoices.visibility = View.VISIBLE
+            animationController.animateChoiceList(binding.llChoices)
+        } else {
+            binding.svChoices.visibility = View.GONE
+        }
     }
 
     private fun showEnding() {
         isEnding = true
         binding.llChoices.removeAllViews()
-        binding.llChoices.visibility = View.GONE
-        
-        val statsMap = gameState.getStatsMap()
-        val ending = SceneRepository.endings.find { it.condition.isMet(statsMap) } 
-            ?: SceneRepository.endings.last()
+        binding.svChoices.visibility = View.GONE
 
-        binding.tvSpeakerName.visibility = View.GONE
-        binding.ivCharacter.visibility = View.GONE
-        binding.ivCharacterAura.visibility = View.GONE
-        binding.ivBackground.setImageResource(ending.backgroundResId)
-        
-        binding.tvSceneText.text = ""
-        fullText = ending.text
-        typeIndex = 0
-        isTyping = true
-        
-        val runnable = object : Runnable {
-            override fun run() {
-                if (typeIndex <= fullText.length) {
-                    binding.tvSceneText.text = fullText.substring(0, typeIndex)
-                    typeIndex++
-                    handler.postDelayed(this, typingDelay)
-                } else {
-                    isTyping = false
-                    handler.postDelayed({ startCreditScroll(ending.text) }, 3000)
+        val ending = memoryDistortionEngine.resolveEnding(SceneRepository.endings, gameState)
+        animationController.crossfadeScene(binding.transitionScrim) {
+            binding.tvSpeakerName.visibility = View.GONE
+            binding.visualRenderer.setScene(ending.backgroundResId, 0, null, "ending_${ending.backgroundResId}")
+
+            binding.tvSceneText.text = ""
+            fullText = realityInstabilityRenderer.apply(ending.text, gameState)
+            typeIndex = 0
+            isTyping = true
+            currentTypingDelay = realityInstabilityRenderer.typingDelayMs(gameState)
+
+            val runnable = object : Runnable {
+                override fun run() {
+                    if (typeIndex <= fullText.length) {
+                        binding.tvSceneText.text = fullText.substring(0, typeIndex)
+                        typeIndex++
+                        val nextCharacter = fullText.getOrNull(typeIndex)
+                        val extraPause = realityInstabilityRenderer.additionalPause(nextCharacter, gameState)
+                        handler.postDelayed(this, currentTypingDelay + extraPause)
+                    } else {
+                        isTyping = false
+                        handler.postDelayed({ startCreditScroll(ending.text) }, 3000)
+                    }
                 }
             }
+            handler.post(runnable)
         }
-        handler.post(runnable)
     }
 
     private fun startCreditScroll(loreText: String) {
@@ -562,6 +593,13 @@ class MainActivity : AppCompatActivity() {
             } else {
                 gameState.applyStatChanges(choice.statChanges)
             }
+            val memoryResult = memoryDistortionEngine.recordChoice(gameState, choice)
+            if (memoryResult.wasDistorted) {
+                showStatGainAnimation("MEMORY DISTORTED")
+            }
+            if (memoryResult.falseMemoryInserted != null) {
+                showStatGainAnimation("A FALSE MEMORY TAKES ROOT")
+            }
             loadScene(choice.nextSceneId)
         }
     }
@@ -589,10 +627,9 @@ class MainActivity : AppCompatActivity() {
     private fun showStatGainAnimation(message: String) {
         val textView = TextView(this).apply {
             text = message
-            setTextColor(Color.WHITE)
+            setTextColor(VisualPalette.TRUTH)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             gravity = Gravity.CENTER
-            setBackgroundResource(R.drawable.narrative_box_bg) 
             setPadding(24, 12, 24, 12)
             layoutParams = FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -603,40 +640,28 @@ class MainActivity : AppCompatActivity() {
             }
             alpha = 0f
         }
+        uiManager.styleOverlayMessage(textView)
         binding.overlayContainer.addView(textView)
-        textView.animate()
-            .alpha(1f)
-            .translationY(20f)
-            .setDuration(1000)
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    textView.animate()
-                        .alpha(0f)
-                        .setStartDelay(1500)
-                        .setDuration(800)
-                        .setListener(object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                binding.overlayContainer.removeView(textView)
-                            }
-                        })
-                }
-            })
+        animationController.animateOverlayMessage(textView) {
+            binding.overlayContainer.removeView(textView)
+        }
     }
 
     private fun createStyledButton(buttonText: String, onClick: () -> Unit): Button {
         return Button(this).apply {
             text = buttonText
-            background = ContextCompat.getDrawable(context, R.drawable.medieval_button_bg)
-            setTextColor(Color.WHITE)
+            background = ContextCompat.getDrawable(context, R.drawable.btn_choice_bg)
+            setTextColor(VisualPalette.TRUTH)
             isAllCaps = false
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
-            setPadding(24, 8, 24, 8)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+            setPadding(24, 14, 24, 14)
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                setMargins(0, 0, 0, 8)
+                setMargins(0, 0, 0, 10)
             }
+            uiManager.styleChoiceButton(this)
             setOnClickListener { onClick() }
         }
     }

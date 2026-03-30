@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="vale_background">#0D0F1A</color>
+    <color name="vale_environment">#2A2F3A</color>
+    <color name="vale_truth">#EAEAF0</color>
+    <color name="vale_hope">#FFB86C</color>
+    <color name="vale_scrim">#CC0D0F1A</color>
+    <color name="vale_panel">#D9161B2A</color>
+    <color name="vale_panel_edge">#33EAEAF0</color>
+    <color name="vale_panel_warm_edge">#52FFB86C</color>
+    <color name="vale_shadow">#E6000000</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#1A1510"
+    android:background="@drawable/medieval_panel_bg"
     android:orientation="vertical"
     android:padding="20dp">
 
@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SETTINGS"
-        android:textColor="#AA8844"
+        android:textColor="@color/vale_hope"
         android:textSize="20sp"
         android:textStyle="bold"
         android:fontFamily="@font/fontfile1"
@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Audio Volume"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/vale_truth"
         android:textSize="14sp"
         android:fontFamily="@font/fontfile1"
         android:layout_marginBottom="8dp"/>
@@ -32,8 +32,8 @@
         android:layout_height="wrap_content"
         android:max="100"
         android:progress="70"
-        android:progressTint="#AA8844"
-        android:thumbTint="#FFD700"
+        android:progressTint="@color/vale_hope"
+        android:thumbTint="@color/vale_truth"
         android:layout_marginBottom="16dp"/>
 
     <CheckBox
@@ -41,8 +41,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Enable Music"
-        android:textColor="#FFFFFF"
-        android:buttonTint="#AA8844"
+        android:textColor="@color/vale_truth"
+        android:buttonTint="@color/vale_hope"
         android:checked="true"
         android:fontFamily="@font/fontfile1"
         android:layout_marginBottom="20dp"/>
@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Data Management"
-        android:textColor="#AA8844"
+        android:textColor="@color/vale_hope"
         android:textSize="14sp"
         android:textStyle="bold"
         android:fontFamily="@font/fontfile1"
@@ -60,10 +60,10 @@
     <Button
         android:id="@+id/btnDeleteSave"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="44dp"
         android:text="DELETE ALL SAVES"
         android:background="@drawable/medieval_button_bg"
-        android:textColor="#FF4444"
+        android:textColor="@color/vale_truth"
         android:textSize="12sp"
         android:fontFamily="@font/fontfile1"
         android:layout_marginBottom="20dp"/>
@@ -74,7 +74,7 @@
         android:layout_height="44dp"
         android:text="BACK TO VALE"
         android:background="@drawable/medieval_button_bg"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/vale_truth"
         android:fontFamily="@font/fontfile1"
         android:layout_marginBottom="12dp"/>
 
@@ -84,7 +84,7 @@
         android:layout_height="44dp"
         android:text="MAIN MENU"
         android:background="@drawable/medieval_button_bg"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/vale_truth"
         android:fontFamily="@font/fontfile1"/>
 
 </LinearLayout>

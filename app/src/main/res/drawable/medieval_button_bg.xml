@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#40FFFFFF">
+    android:color="#18EAEAF0">
     <item>
-        <inset android:insetBottom="4dp">
-            <layer-list>
-                <item>
-                    <shape android:shape="rectangle">
-                        <solid android:color="#E6221100" />
-                        <stroke android:width="2dp" android:color="#AA8844" />
-                        <corners android:radius="0dp" />
-                    </shape>
-                </item>
-                <!-- Remove ornaments or make them much smaller if they are causing overlap issues -->
-                <item android:width="12dp" android:height="12dp" android:gravity="center_vertical|left" android:left="2dp">
-                    <bitmap android:src="@drawable/ornament1" android:tint="#AA8844" android:alpha="0.3" />
-                </item>
-                <item android:width="12dp" android:height="12dp" android:gravity="center_vertical|right" android:right="2dp">
-                    <bitmap android:src="@drawable/ornament2" android:tint="#AA8844" android:alpha="0.3" />
-                </item>
-            </layer-list>
-        </inset>
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="#80161B2A" />
+                    <corners android:radius="16dp" />
+                    <stroke
+                        android:width="1dp"
+                        android:color="#16EAEAF0" />
+                    <padding
+                        android:left="18dp"
+                        android:top="12dp"
+                        android:right="18dp"
+                        android:bottom="12dp" />
+                </shape>
+            </item>
+            <item android:left="14dp" android:right="14dp" android:top="12dp" android:bottom="12dp" android:gravity="bottom">
+                <shape android:shape="rectangle">
+                    <size android:height="2dp" />
+                    <solid android:color="#44FFB86C" />
+                </shape>
+            </item>
+        </layer-list>
     </item>
 </ripple>

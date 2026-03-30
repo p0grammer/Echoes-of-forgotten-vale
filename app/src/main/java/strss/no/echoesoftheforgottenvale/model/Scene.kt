@@ -6,5 +6,11 @@ data class Scene(
     val speaker: String? = null,
     val backgroundResId: Int,
     val characterResId: Int,
-    val choices: List<Choice>
+    val choices: List<Choice>,
+    val stableVoice: String? = null,
+    val distortedVoice: String? = null,
+    val revisitTextVariants: List<String> = emptyList(),
+    val conflictingDialogues: List<ConflictingDialogue> = emptyList(),
+    val mirrorEchoes: List<MirrorEcho> = emptyList(),
+    val falseMemoryDialogue: String? = null
 )
