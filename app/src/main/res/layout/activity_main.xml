@@ -19,7 +19,9 @@
         <strss.no.echoesoftheforgottenvale.visual.VisualRenderer
             android:id="@+id/menuVisualRenderer"
             android:layout_width="0dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/ivMenuBackground"
@@ -28,7 +30,8 @@
             android:scaleType="centerCrop"
             android:alpha="0"
             android:src="@drawable/forgotten_outskirts"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:importantForAccessibility="no" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -194,7 +197,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:importantForAccessibility="no" />
 
         <ImageView
             android:id="@+id/ivCharacterAura"
@@ -208,7 +212,8 @@
             app:layout_constraintHeight_percent="0.9"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.55" />
+            app:layout_constraintWidth_percent="0.55"
+            android:importantForAccessibility="no" />
 
         <ImageView
             android:id="@+id/ivCharacter"
@@ -221,7 +226,8 @@
             app:layout_constraintHeight_percent="0.8"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.5" />
+            app:layout_constraintWidth_percent="0.5"
+            android:importantForAccessibility="no" />
 
         <View
             android:id="@+id/transitionScrim"
@@ -234,7 +240,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:importantForAccessibility="no" />
 
         <!-- Stats HUD -->
         <LinearLayout
